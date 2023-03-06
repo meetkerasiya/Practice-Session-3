@@ -14,47 +14,30 @@ namespace Students.API.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            //for request logs
-            var request = await RequestFormatter(context.Request);
-            Log.Information($"Request {request}");
-            Console.WriteLine("req res middleware");
-            Console.WriteLine(context.Request.Body.ToString());
+            var request = context.Request;
 
+            // Log the request
+            Log.Information("Request {RequestMethod} {RequestPath} received", request.Method, request.Path);
 
+            // Copy the response body to a memory stream for logging
+            var originalBodyStream = context.Response.Body;
             using var responseBody = new MemoryStream();
             context.Response.Body = responseBody;
+
+            // Call the next middleware in the pipeline
             await _next(context);
 
-            //for response log
-           
-            
-            var originalBodyStream = context.Response.Body;
-            
-            var response=await ResponseFormatter(context.Response);
-            Log.Information($"Response: {response}");
+            // Log the response
+            Log.Information("Response {RequestMethod} {RequestPath} returned {StatusCode}", request.Method, request.Path, context.Response.StatusCode);
 
+            // Write the response body back to the original response stream
+            responseBody.Seek(0, SeekOrigin.Begin);
             await responseBody.CopyToAsync(originalBodyStream);
-            
+            context.Response.Body = originalBodyStream;
+
+
         }
 
-        //private async Task<string> RequestFormatter(HttpRequest request)
-        //{
-        //    var body = request.Body;
-        //    request.EnableBuffering();
-        //    var buffer = new byte[Convert.ToInt32(request.ContentLength)];
-        //    await request.Body.ReadAsync(buffer, 0, buffer.Length);
-        //    var bodyAsText = Encoding.UTF8.GetString(buffer);
-        //    request.Body = body;
-
-        //    return $"{request.Method} {request.Host} {request.Path} {request.QueryString} {bodyAsText}";
-        //}
-
-        //private async Task<string> ResponseFormatter(HttpResponse response)
-        //{
-        //    response.Body.Seek(0, SeekOrigin.Begin);
-        //    var bodyStream=await new StreamReader(response.Body).ReadToEndAsync();
-        //    response.Body.Seek(0,SeekOrigin.Begin);
-        //    return $"{response.StatusCode}: {bodyStream}";
-        //}
+       
     }
 }
