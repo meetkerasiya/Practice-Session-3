@@ -15,6 +15,8 @@ namespace Students.API.Middleware
         {
             var watch=new Stopwatch();
             watch.Start();
+            Console.WriteLine("Time middleware");
+            Console.WriteLine(context.Request.Body.ToString());
 
             await _next(context);
 

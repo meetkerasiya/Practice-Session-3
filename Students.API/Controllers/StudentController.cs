@@ -23,6 +23,7 @@ namespace Students.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
+            Console.WriteLine("Get in controller");
             IEnumerable<Student> students = _dataRepository.GetAll();
             return Ok(students);
         }
@@ -44,7 +45,10 @@ namespace Students.API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]Student student)
         {
-            if(student==null)
+            Console.WriteLine("Controller");
+            Console.WriteLine(student);
+
+            if (student==null)
             {
                 return BadRequest("Student is null.");
             }

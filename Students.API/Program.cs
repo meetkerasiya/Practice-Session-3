@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Students.API.Middleware;
 using Students.API.Models;
 using Students.API.Models.Repository;
+using Serilog;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,10 +33,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+
+//serilog
+var configuration=new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .Build();
+Log.Logger =new LoggerConfiguration()
+    .ReadFrom.Configuration(configuration)
+    .CreateLogger();
+
 
 app.UseAuthorization();
+app.UseMiddleware<RequestResponseLogMiddleware>();
 app.UseMiddleware<TimeMiddleware>();
+app.UseHttpsRedirection();
+
 app.MapControllers();
 
 app.Run();
