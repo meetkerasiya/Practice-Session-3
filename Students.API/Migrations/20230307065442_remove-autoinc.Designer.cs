@@ -10,9 +10,9 @@ using Students.API.Models;
 
 namespace Students.API.Migrations
 {
-    [DbContext(typeof(StudentContext))]
-    [Migration("20230306051255_StudentDBAdded")]
-    partial class StudentDBAdded
+    [DbContext(typeof(DataContext))]
+    [Migration("20230307065442_remove-autoinc")]
+    partial class removeautoinc
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,22 @@ namespace Students.API.Migrations
                     b.HasKey("StudentID");
 
                     b.ToTable("Students");
+
+                    b.HasData(
+                        new
+                        {
+                            StudentID = 1,
+                            City = "Amreli",
+                            FirstName = "Jay",
+                            LastName = "Laheri"
+                        },
+                        new
+                        {
+                            StudentID = 2,
+                            City = "Kunkavav",
+                            FirstName = "Krupal",
+                            LastName = "Vasani"
+                        });
                 });
 #pragma warning restore 612, 618
         }

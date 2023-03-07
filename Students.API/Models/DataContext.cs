@@ -2,9 +2,9 @@
 
 namespace Students.API.Models
 {
-    public class StudentContext : DbContext
+    public class DataContext : DbContext
     {
-        public StudentContext(DbContextOptions options) : base(options)
+        public DataContext(DbContextOptions options) : base(options)
         {
 
         }

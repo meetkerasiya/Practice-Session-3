@@ -6,7 +6,6 @@ namespace Students.API.Models
     public class Student
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int StudentID { get; set; }
 
         public string FirstName { get; set; } = string.Empty;

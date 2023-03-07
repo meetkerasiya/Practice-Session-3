@@ -3,16 +3,18 @@ using Students.API.Middleware;
 using Students.API.Models;
 using Students.API.Models.Repository;
 using Serilog;
+using Microsoft.Extensions.DependencyInjection;
+using System.Xml;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 //For EF Core 
 var services = builder.Services;
-services.AddDbContext<StudentContext>(option =>
+services.AddDbContext<DataContext>(option =>
             option.UseSqlServer(builder.Configuration
             .GetConnectionString("StudentDB")));
-services.AddScoped<IDataRepository<Student>,StudentRepository>();
+services.AddScoped(typeof(IDataRepository<>) ,typeof(DataRepository<>) );
 
 // Add services to the container.
 

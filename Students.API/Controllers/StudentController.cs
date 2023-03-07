@@ -70,13 +70,9 @@ namespace Students.API.Controllers
                 return BadRequest("Student is null.");
             }
 
-            Student studentToUpdate=_dataRepository.Get(id);
-            if(studentToUpdate == null)
-            {
-                return NotFound("the student record could not be found.");
-            }
+            
 
-            _dataRepository.Update(studentToUpdate,student);
+            _dataRepository.Update(student);
             return NoContent();
         }
 
@@ -89,7 +85,7 @@ namespace Students.API.Controllers
             {
                 return NotFound("The student record couldn't be found.");
             }
-            _dataRepository.Delete(student);
+            _dataRepository.Delete(id);
 
             return NoContent();
         }
